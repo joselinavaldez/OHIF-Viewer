@@ -1,5 +1,4 @@
 import React from 'react';
-
 /**
  *
  * Note: this is an example of how the customization module can be used
@@ -24,6 +23,27 @@ export default function getCustomizationModule() {
           },
         ],
       },
+    },
+    {
+      name: 'default',
+      value: [
+        {
+          id: 'ohif.overlayItem',
+          uiType: 'uiType',
+          content: function (props) {
+            const { instance, label } = props;
+            const value = this.attribute
+              ? instance[this.attribute]
+              : this.contentF(props);
+            if (!value) return null;
+            return (
+              <span>
+                ${label} ${value}
+              </span>
+            );
+          },
+        },
+      ],
     },
   ];
 }

@@ -16,6 +16,8 @@ export default function isDisplaySetReconstructable(instances) {
   }
 
   const firstInstance = instances[0];
+  const { ImageOrientationPatient } = firstInstance;
+  if (!ImageOrientationPatient) return false;
 
   const Modality = firstInstance.Modality;
   const isMultiframe = firstInstance.NumberOfFrames > 1;
@@ -99,6 +101,8 @@ function processSingleframe(instances) {
 
     let previousImagePositionPatient = firstImagePositionPatient;
 
+    let warningShown = false;
+
     for (let i = 1; i < instances.length; i++) {
       const instance = instances[i];
       // Todo: get metadata from OHIF.MetadataProvider
@@ -119,7 +123,12 @@ function processSingleframe(instances) {
         if (issue === reconstructionIssues.MISSING_FRAMES) {
           missingFrames += spacingIssue.missingFrames;
         } else if (issue === reconstructionIssues.IRREGULAR_SPACING) {
-          return { value: false };
+          if (!warningShown) {
+            console.log(
+              'Irregular spacing, may not be perfectly reconstructable'
+            );
+          }
+          warningShown = true;
         }
       }
 

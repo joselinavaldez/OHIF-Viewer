@@ -281,6 +281,7 @@ export default class ExtensionManager {
 
       return extensionModule;
     } catch (ex) {
+      console.warn(ex);
       throw new Error(
         `Exception thrown while trying to call ${getModuleFnName} for the ${extensionId} extension`
       );
