@@ -43,8 +43,10 @@ export function setConfiguration(appConfig) {
   };
 
   cornerstoneWADOImageLoader.configure({
-    beforeSend: function(xhr) {
-      const headers = OHIF.DICOMWeb.getAuthorizationHeader();
+    beforeSend: function (xhr) {
+      const state = window.store.getState();
+      const activeServer = state.servers.servers.find(t => t.active);
+      const headers = OHIF.DICOMWeb.getAuthorizationHeader(activeServer);
 
       if (headers.Authorization) {
         xhr.setRequestHeader('Authorization', headers.Authorization);
