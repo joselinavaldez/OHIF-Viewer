@@ -17,15 +17,11 @@
 # 1. Building the React application for production
 # 2. Setting up our Nginx (Alpine Linux) image w/ step one's output
 #
-
-
 # Stage 1: Build the application
 # docker build -t ohif/viewer:latest .
 FROM node:14-slim as builder
-
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
-
 # Copy Files
 COPY .docker /usr/src/app/.docker
 COPY .webpack /usr/src/app/.webpack
@@ -38,15 +34,24 @@ COPY lerna.json /usr/src/app/lerna.json
 COPY package.json /usr/src/app/package.json
 COPY postcss.config.js /usr/src/app/postcss.config.js
 COPY yarn.lock /usr/src/app/yarn.lock
-
 RUN apt-get update && apt-get install -y python make g++
 # Run the install before copying the rest of the files
 RUN yarn config set workspaces-experimental true
 RUN yarn install --verbose
-
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 ENV QUICK_BUILD true
 # ENV GENERATE_SOURCEMAP=false
 # ENV REACT_APP_CONFIG=config/default.js
-
 RUN yarn run build
+# Stage 2: Bundle the built application into a Docker container
+# which runs Node with Alpine Linux
+FROM node:alpine
+RUN apk add --no-cache bash
+COPY --from=builder /usr/src/app/platform/viewer/dist /usr/src/app/
+COPY .docker/Viewer-v2.x/entrypoint.sh /usr/src/
+RUN chmod 777 /usr/src/entrypoint.sh && \
+  npm install --global http-server
+WORKDIR /usr/src/app/
+EXPOSE 3000
+ENTRYPOINT ["/usr/src/entrypoint.sh"]
+CMD ["http-server", "-p", "3000"]
