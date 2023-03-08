@@ -50,17 +50,3 @@ ENV QUICK_BUILD true
 # ENV REACT_APP_CONFIG=config/default.js
 
 RUN yarn run build
-
-# Stage 2: Bundle the built application into a Docker container
-# which runs Nginx using Alpine Linux
-FROM nginx:1.21.1-alpine
-RUN apk add --no-cache bash
-RUN rm -rf /etc/nginx/conf.d
-COPY .docker/Viewer-v2.x /etc/nginx/conf.d
-COPY .docker/Viewer-v2.x/entrypoint.sh /usr/src/
-RUN chmod 777 /usr/src/entrypoint.sh
-COPY --from=builder /usr/src/app/platform/viewer/dist /usr/share/nginx/html
-EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["/usr/src/entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
