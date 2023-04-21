@@ -57,6 +57,7 @@ import store from './store';
 import WhiteLabelingContext from './context/WhiteLabelingContext';
 import UserManagerContext from './context/UserManagerContext';
 import { AppProvider, useAppContext, CONTEXTS } from './context/AppContext';
+import { getWrappedqueryParamServer } from './utils/getServerFromQueryParam';
 
 /** ~~~~~~~~~~~~~ Application Setup */
 const commandsManagerConfig = {
@@ -325,6 +326,7 @@ function _initHotkeys(appConfigHotkeys) {
 }
 
 function _initServers(servers) {
+  servers = getWrappedqueryParamServer() || servers;
   if (servers) {
     utils.addServers(servers, store);
   }

@@ -3,7 +3,7 @@ import cornerstone from 'cornerstone-core';
 import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import dicomParser from 'dicom-parser';
 import version from './version.js';
-import AppContext from './context/AppContext';
+import { getQueryParamServer } from './utils/getServerFromQueryParam';
 
 export function setConfiguration(appConfig) {
   let homepage;
@@ -43,9 +43,10 @@ export function setConfiguration(appConfig) {
   };
 
   cornerstoneWADOImageLoader.configure({
-    beforeSend: function (xhr) {
+    beforeSend: function(xhr) {
       const state = window.store.getState();
-      const activeServer = state.servers.servers.find(t => t.active);
+      const activeServer =
+        getQueryParamServer() || state.servers.servers.find(t => t.active);
       const headers = OHIF.DICOMWeb.getAuthorizationHeader(activeServer);
 
       if (headers.Authorization) {

@@ -19,6 +19,9 @@ window.config = {
     dicomWeb: [
       {
         name: 'PAC LAMANSYS',
+        // wadoUriRoot: 'http://localhost:8080/imagenetwork/wado',
+        // qidoRoot: 'http://localhost:8080/imagenetwork/dicom-web',
+        // wadoRoot: 'http://localhost:8080/imagenetwork/dicom-web',
         wadoUriRoot: 'https://pac.lamansys.com/wado',
         qidoRoot: 'https://pac.lamansys.com/dicom-web',
         wadoRoot: 'https://pac.lamansys.com/dicom-web',
@@ -27,9 +30,6 @@ window.config = {
         thumbnailRendering: 'wadouri',
         enableStudyLazyLoad: true,
         supportsFuzzyMatching: true,
-        requestOptions: {
-          auth: 'admin:admin',
-        },
       },
     ],
   },
