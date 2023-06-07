@@ -45,13 +45,13 @@ ENV QUICK_BUILD true
 RUN yarn run build
 # Stage 2: Bundle the built application into a Docker container
 # which runs Node with Alpine Linux
-FROM node:alpine
+FROM nginx:alpine
 RUN apk add --no-cache bash
-COPY --from=builder /usr/src/app/platform/viewer/dist /usr/src/app/
-COPY .docker/Viewer-v2.x/entrypoint.sh /usr/src/
-RUN chmod 777 /usr/src/entrypoint.sh && \
-  npm install --global http-server
-WORKDIR /usr/src/app/
-EXPOSE 3000
-ENTRYPOINT ["/usr/src/entrypoint.sh"]
-CMD ["http-server", "-p", "3000"]
+COPY --from=builder /usr/src/app/platform/viewer/dist /usr/share/nginx/html
+COPY .docker/Viewer-v2.x/entrypoint.sh /usr/share/nginx/entrypoint.sh
+COPY .docker/Viewer-v2.x/default.conf /etc/nginx/conf.d/default.conf
+RUN chmod 777 /usr/share/nginx/entrypoint.sh
+WORKDIR /usr/share/nginx/
+EXPOSE 80
+ENTRYPOINT ["/usr/share/nginx/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

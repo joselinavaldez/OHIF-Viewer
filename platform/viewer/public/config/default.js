@@ -18,18 +18,18 @@ window.config = {
   servers: {
     dicomWeb: [
       {
-        name: 'PAC LAMANSYS',
-        // wadoUriRoot: 'http://localhost:8080/imagenetwork/wado',
-        // qidoRoot: 'http://localhost:8080/imagenetwork/dicom-web',
-        // wadoRoot: 'http://localhost:8080/imagenetwork/dicom-web',
-        wadoUriRoot: 'https://pac.lamansys.com/wado',
-        qidoRoot: 'https://pac.lamansys.com/dicom-web',
-        wadoRoot: 'https://pac.lamansys.com/dicom-web',
+        name: 'PAC',
+        wadoUriRoot: 'http://localhost:8042/wado',
+        qidoRoot: 'http://localhost:8042/dicom-web',
+        wadoRoot: 'http://localhost:8042/dicom-web',
         qidoSupportsIncludeField: true,
         imageRendering: 'wadouri',
         thumbnailRendering: 'wadouri',
         enableStudyLazyLoad: true,
         supportsFuzzyMatching: true,
+        requestOptions: {
+          auth: 'admin:admin',
+        },
       },
     ],
   },
