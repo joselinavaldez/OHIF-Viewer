@@ -19,9 +19,9 @@ window.config = {
     dicomWeb: [
       {
         name: 'PAC',
-        wadoUriRoot: 'http://localhost:8042/wado',
-        qidoRoot: 'http://localhost:8042/dicom-web',
-        wadoRoot: 'http://localhost:8042/dicom-web',
+        wadoUriRoot: 'http://localhost:8042/imagenetwork/wado',
+        qidoRoot: 'http://localhost:8042/imagenetwork/dicom-web',
+        wadoRoot: 'http://localhost:8042/imagenetwork/dicom-web',
         qidoSupportsIncludeField: true,
         imageRendering: 'wadouri',
         thumbnailRendering: 'wadouri',

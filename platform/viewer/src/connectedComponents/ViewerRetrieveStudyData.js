@@ -144,7 +144,7 @@ const _showUserMessage = (queryParamApplied, message, dialog = {}) => {
     return;
   }
 
-  const { show: showUserMessage = () => {} } = dialog;
+  const { show: showUserMessage = () => { } } = dialog;
   showUserMessage({
     message,
   });
@@ -420,7 +420,7 @@ function ViewerRetrieveStudyData({
       return <NotFound />;
     }
 
-    return <NotFound message="Failed to retrieve study data" />;
+    return <NotFound message="Error al cargar estudio" />;
   }
 
   return (
